@@ -526,6 +526,19 @@
                         <div class="loading">Checking status...</div>
                     </div>
                 </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Bitbucket</div>
+                        <div class="status-text loading" id="bitbucket-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="bitbucket-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -662,7 +675,7 @@
             
             if (!statusData) return;
 
-            const products = ['jira-software', 'jira-service', 'confluence', 'jira-core'];
+            const products = ['jira-software', 'jira-service', 'confluence', 'jira-core', 'bitbucket'];
             const status = statusData.status?.indicator || 'none';
             const incidents = incidentsData?.incidents || [];
 
