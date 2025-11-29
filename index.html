@@ -503,6 +503,32 @@
 
                 <div class="atlassian-product">
                     <div class="product-header">
+                        <div class="product-name">Jira Work Management</div>
+                        <div class="status-text loading" id="jira-work-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="jira-work-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Jira Product Discovery</div>
+                        <div class="status-text loading" id="jira-discovery-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="jira-discovery-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
                         <div class="product-name">Confluence</div>
                         <div class="status-text loading" id="confluence-status">
                             <span class="status-indicator loading"></span>
@@ -536,6 +562,71 @@
                         </div>
                     </div>
                     <div class="current-incidents" id="bitbucket-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Trello</div>
+                        <div class="status-text loading" id="trello-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="trello-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Opsgenie</div>
+                        <div class="status-text loading" id="opsgenie-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="opsgenie-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Atlassian Support</div>
+                        <div class="status-text loading" id="atlassian-support-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="atlassian-support-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Atlassian Partners</div>
+                        <div class="status-text loading" id="atlassian-partners-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="atlassian-partners-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Atlassian Developers</div>
+                        <div class="status-text loading" id="atlassian-developers-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="atlassian-developers-incidents">
                         <div class="loading">Checking status...</div>
                     </div>
                 </div>
@@ -675,7 +766,20 @@
             
             if (!statusData) return;
 
-            const products = ['jira-software', 'jira-service', 'confluence', 'jira-core', 'bitbucket'];
+            const products = [
+                'jira-software', 
+                'jira-service', 
+                'jira-work',
+                'jira-discovery',
+                'confluence', 
+                'jira-core', 
+                'bitbucket',
+                'trello',
+                'opsgenie',
+                'atlassian-support',
+                'atlassian-partners',
+                'atlassian-developers'
+            ];
             const status = statusData.status?.indicator || 'none';
             const incidents = incidentsData?.incidents || [];
 
