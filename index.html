@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TELUS SaaS Status Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #FFFFFF;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #2C2E30;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: #FFFFFF;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+            border-bottom: 4px solid #4B286D;
+        }
+
+        h1 {
+            color: #4B286D;
+            font-size: 2.5em;
+            font-weight: 500;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: #414547;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .last-updated {
+            color: #676E73;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn {
+            background: #2B8000;
+            color: #FFFFFF;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 4px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: none;
+        }
+
+        .refresh-btn:hover {
+            background: #1F5C09;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(43, 128, 0, 0.3);
+        }
+
+        .refresh-btn:disabled {
+            background: #B2B9BF;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .overall-status {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .overall-card {
+            background: #FAFAFA;
+            padding: 30px 50px;
+            border-radius: 4px;
+            text-align: center;
+            border: 1px solid #E3E6E8;
+            min-width: 180px;
+        }
+
+        .overall-card h2 {
+            font-size: 1em;
+            color: #676E73;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .overall-card .count {
+            font-size: 3.5em;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .count.green { color: #2B8000; }
+        .count.yellow { color: #8C5415; }
+        .count.red { color: #C12335; }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: #FFFFFF;
+            border-radius: 4px;
+            padding: 30px;
+            border: 1px solid #E3E6E8;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: #4B286D;
+            box-shadow: 0 4px 16px rgba(75, 40, 109, 0.1);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #F4F4F7;
+        }
+
+        .service-title-section {
+            flex: 1;
+        }
+
+        .service-name {
+            font-size: 1.5em;
+            font-weight: 500;
+            color: #4B286D;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
+        }
+
+        .view-status-link {
+            display: inline-block;
+            color: #2B8000;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 1px solid transparent;
+        }
+
+        .view-status-link:hover {
+            border-bottom-color: #2B8000;
+        }
+
+        .view-status-link::after {
+            content: " →";
+        }
+
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .status-indicator.operational {
+            background: #2B8000;
+        }
+
+        .status-indicator.degraded {
+            background: #8C5415;
+        }
+
+        .status-indicator.outage {
+            background: #C12335;
+        }
+
+        .status-indicator.loading {
+            background: #B2B9BF;
+        }
+
+        .status-text {
+            font-size: 0.95em;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .status-text.operational { color: #2B8000; }
+        .status-text.degraded { color: #8C5415; }
+        .status-text.outage { color: #C12335; }
+        .status-text.loading { color: #676E73; }
+
+        .current-incidents {
+            margin-top: 20px;
+        }
+
+        .incident {
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #FFF9EE;
+            border-radius: 4px;
+            border-left: 4px solid #8C5415;
+        }
+
+        .incident.major {
+            background: #FFF6F8;
+            border-left-color: #C12335;
+        }
+
+        .incident-title {
+            font-weight: 500;
+            color: #2C2E30;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .incident-status {
+            font-size: 0.85em;
+            color: #676E73;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .incident-update {
+            font-size: 0.9em;
+            color: #414547;
+            line-height: 1.6;
+        }
+
+        .no-incidents {
+            text-align: center;
+            padding: 30px;
+            color: #2B8000;
+            font-weight: 500;
+            font-size: 1em;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #676E73;
+        }
+
+        .error {
+            text-align: center;
+            padding: 20px;
+            color: #C12335;
+            background: #FFF6F8;
+            border-radius: 4px;
+            font-size: 0.9em;
+            border: 1px solid #E12339;
+        }
+
+        .atlassian-group {
+            background: #FFFFFF;
+            border-radius: 4px;
+            padding: 30px;
+            border: 1px solid #E3E6E8;
+            margin-bottom: 30px;
+        }
+
+        .atlassian-header-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #4B286D;
+        }
+
+        .atlassian-title {
+            font-size: 1.8em;
+            font-weight: 500;
+            color: #4B286D;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .atlassian-link {
+            display: inline-block;
+            color: #2B8000;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 1px solid transparent;
+        }
+
+        .atlassian-link:hover {
+            border-bottom-color: #2B8000;
+        }
+
+        .atlassian-link::after {
+            content: " →";
+        }
+
+        .atlassian-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .atlassian-product {
+            background: #FAFAFA;
+            border-radius: 4px;
+            padding: 25px;
+            border: 1px solid #E3E6E8;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .product-name {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: #4B286D;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .overall-status {
+                flex-direction: column;
+            }
+
+            .overall-card {
+                width: 100%;
+            }
+
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .atlassian-products {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .service-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .product-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SaaS Status Dashboard</h1>
+            <p class="subtitle">Real-time operational status monitoring</p>
+            <p class="last-updated">Last checked: <span id="lastUpdated">Never</span></p>
+            <button class="refresh-btn" onclick="loadAllStatus()" id="refreshBtn">
+                Check Now
+            </button>
+        </header>
+
+        <div class="overall-status">
+            <div class="overall-card">
+                <h2>Operational</h2>
+                <div class="count green" id="operationalCount">0</div>
+            </div>
+            <div class="overall-card">
+                <h2>Issues</h2>
+                <div class="count yellow" id="issuesCount">0</div>
+            </div>
+            <div class="overall-card">
+                <h2>Outages</h2>
+                <div class="count red" id="outagesCount">0</div>
+            </div>
+        </div>
+
+        <div class="status-grid">
+            <div class="service-card" id="slack-card">
+                <div class="service-header">
+                    <div class="service-title-section">
+                        <div class="service-name">Slack</div>
+                        <a href="https://status.slack.com" target="_blank" class="view-status-link">View Status Page</a>
+                    </div>
+                    <div class="status-text loading">
+                        <span class="status-indicator loading"></span>
+                        Checking...
+                    </div>
+                </div>
+                <div class="current-incidents" id="slack-incidents">
+                    <div class="loading">Checking status...</div>
+                </div>
+            </div>
+
+            <div class="service-card" id="monday-card">
+                <div class="service-header">
+                    <div class="service-title-section">
+                        <div class="service-name">monday.com</div>
+                        <a href="https://status.monday.com" target="_blank" class="view-status-link">View Status Page</a>
+                    </div>
+                    <div class="status-text loading">
+                        <span class="status-indicator loading"></span>
+                        Checking...
+                    </div>
+                </div>
+                <div class="current-incidents" id="monday-incidents">
+                    <div class="loading">Checking status...</div>
+                </div>
+            </div>
+
+            <div class="service-card" id="lucid-card">
+                <div class="service-header">
+                    <div class="service-title-section">
+                        <div class="service-name">Lucid Software</div>
+                        <a href="https://status.lucid.co" target="_blank" class="view-status-link">View Status Page</a>
+                    </div>
+                    <div class="status-text loading">
+                        <span class="status-indicator loading"></span>
+                        Checking...
+                    </div>
+                </div>
+                <div class="current-incidents" id="lucid-incidents">
+                    <div class="loading">Checking status...</div>
+                </div>
+            </div>
+
+            <div class="service-card" id="figma-card">
+                <div class="service-header">
+                    <div class="service-title-section">
+                        <div class="service-name">Figma</div>
+                        <a href="https://status.figma.com" target="_blank" class="view-status-link">View Status Page</a>
+                    </div>
+                    <div class="status-text loading">
+                        <span class="status-indicator loading"></span>
+                        Checking...
+                    </div>
+                </div>
+                <div class="current-incidents" id="figma-incidents">
+                    <div class="loading">Checking status...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="atlassian-group">
+            <div class="atlassian-header-section">
+                <div class="atlassian-title">Atlassian Products</div>
+                <a href="https://status.atlassian.com" target="_blank" class="atlassian-link">View Atlassian Status Page</a>
+            </div>
+            <div class="atlassian-products">
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Jira Software</div>
+                        <div class="status-text loading" id="jira-software-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="jira-software-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Jira Service Management</div>
+                        <div class="status-text loading" id="jira-service-status">
+                            <span class="status-indicator loading"></span>
+                            
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="jira-service-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Confluence</div>
+                        <div class="status-text loading" id="confluence-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="confluence-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+
+                <div class="atlassian-product">
+                    <div class="product-header">
+                        <div class="product-name">Jira Core</div>
+                        <div class="status-text loading" id="jira-core-status">
+                            <span class="status-indicator loading"></span>
+                            Checking...
+                        </div>
+                    </div>
+                    <div class="current-incidents" id="jira-core-incidents">
+                        <div class="loading">Checking status...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STATUS_APIS = {
+            slack: 'https://status.slack.com/api/v2.0.0/current',
+            monday: 'https://status.monday.com/api/v2/status.json',
+            lucid: 'https://status.lucid.co/api/v2/status.json',
+            figma: 'https://status.figma.com/api/v2/status.json',
+            atlassian: 'https://status.atlassian.com/api/v2/status.json'
+        };
+
+        const INCIDENTS_APIS = {
+            slack: 'https://status.slack.com/api/v2.0.0/current',
+            monday: 'https://status.monday.com/api/v2/incidents/unresolved.json',
+            lucid: 'https://status.lucid.co/api/v2/incidents/unresolved.json',
+            figma: 'https://status.figma.com/api/v2/incidents/unresolved.json',
+            atlassian: 'https://status.atlassian.com/api/v2/incidents/unresolved.json'
+        };
+
+        const CORS_PROXY = 'https://api.allorigins.win/get?url=';
+
+        let statusCounts = { operational: 0, issues: 0, outages: 0 };
+
+        async function fetchJSON(url) {
+            try {
+                const response = await fetch(CORS_PROXY + encodeURIComponent(url));
+                const data = await response.json();
+                return JSON.parse(data.contents);
+            } catch (error) {
+                console.error('Error fetching:', url, error);
+                return null;
+            }
+        }
+
+        function updateStatusDisplay(cardId, statusElement, status, description) {
+            const statusText = statusElement || document.querySelector(`#${cardId} .status-text`);
+            
+            statusText.className = 'status-text';
+            const indicator = statusText.querySelector('.status-indicator');
+            
+            if (status === 'operational' || status === 'none') {
+                statusText.classList.add('operational');
+                indicator.className = 'status-indicator operational';
+                statusText.innerHTML = '<span class="status-indicator operational"></span>Operational';
+                statusCounts.operational++;
+            } else if (status === 'minor' || status === 'degraded_performance') {
+                statusText.classList.add('degraded');
+                indicator.className = 'status-indicator degraded';
+                statusText.innerHTML = '<span class="status-indicator degraded"></span>Degraded';
+                statusCounts.issues++;
+            } else if (status === 'major' || status === 'partial_outage' || status === 'major_outage') {
+                statusText.classList.add('outage');
+                indicator.className = 'status-indicator outage';
+                statusText.innerHTML = '<span class="status-indicator outage"></span>Outage';
+                statusCounts.outages++;
+            } else {
+                statusText.classList.add('degraded');
+                indicator.className = 'status-indicator degraded';
+                statusText.innerHTML = `<span class="status-indicator degraded"></span>${description || 'Issue'}`;
+                statusCounts.issues++;
+            }
+        }
+
+        function renderIncidents(incidents, containerId) {
+            const container = document.getElementById(containerId);
+            
+            if (!incidents || incidents.length === 0) {
+                container.innerHTML = '<div class="no-incidents">✓ No active incidents</div>';
+                return;
+            }
+
+            let html = '';
+            incidents.forEach(incident => {
+                const isMajor = incident.impact === 'major' || incident.impact === 'critical';
+                const latestUpdate = incident.incident_updates && incident.incident_updates[0];
+                
+                html += `
+                    <div class="incident ${isMajor ? 'major' : ''}">
+                        <div class="incident-title">${incident.name}</div>
+                        <div class="incident-status">${incident.status.replace('_', ' ')}</div>
+                        ${latestUpdate ? `<div class="incident-update">${latestUpdate.body}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        async function loadSlackStatus() {
+            const data = await fetchJSON(STATUS_APIS.slack);
+            if (!data) {
+                document.getElementById('slack-incidents').innerHTML = '<div class="error">Unable to fetch status</div>';
+                return;
+            }
+
+            const card = document.getElementById('slack-card');
+            const statusElement = card.querySelector('.status-text');
+            
+            if (data.status === 'ok' || data.active_incidents?.length === 0) {
+                updateStatusDisplay('slack-card', statusElement, 'operational');
+                renderIncidents([], 'slack-incidents');
+            } else {
+                const incidents = data.active_incidents || [];
+                const worstStatus = incidents.some(i => i.type === 'outage') ? 'major' : 'minor';
+                updateStatusDisplay('slack-card', statusElement, worstStatus);
+                renderIncidents(incidents, 'slack-incidents');
+            }
+        }
+
+        async function loadStatuspageService(service, cardId, incidentsId) {
+            const statusData = await fetchJSON(STATUS_APIS[service]);
+            const incidentsData = await fetchJSON(INCIDENTS_APIS[service]);
+            
+            if (!statusData) {
+                document.getElementById(incidentsId).innerHTML = '<div class="error">Unable to fetch status</div>';
+                return;
+            }
+
+            const card = document.getElementById(cardId);
+            const statusElement = card.querySelector('.status-text');
+            
+            const status = statusData.status?.indicator || 'none';
+            updateStatusDisplay(cardId, statusElement, status, statusData.status?.description);
+            
+            const incidents = incidentsData?.incidents || [];
+            renderIncidents(incidents, incidentsId);
+        }
+
+        async function loadAtlassianStatus() {
+            const statusData = await fetchJSON(STATUS_APIS.atlassian);
+            const incidentsData = await fetchJSON(INCIDENTS_APIS.atlassian);
+            
+            if (!statusData) return;
+
+            const products = ['jira-software', 'jira-service', 'confluence', 'jira-core'];
+            const status = statusData.status?.indicator || 'none';
+            const incidents = incidentsData?.incidents || [];
+
+            products.forEach(product => {
+                const statusElement = document.getElementById(`${product}-status`);
+                updateStatusDisplay(product, statusElement, status);
+                
+                const relevantIncidents = incidents.filter(inc => 
+                    inc.name.toLowerCase().includes(product.replace('-', ' ')) ||
+                    incidents.length < 3
+                );
+                
+                renderIncidents(relevantIncidents.length > 0 ? relevantIncidents : incidents, `${product}-incidents`);
+            });
+        }
+
+        async function loadAllStatus() {
+            const btn = document.getElementById('refreshBtn');
+            btn.disabled = true;
+            btn.textContent = 'Checking...';
+
+            statusCounts = { operational: 0, issues: 0, outages: 0 };
+
+            try {
+                await Promise.all([
+                    loadSlackStatus(),
+                    loadStatuspageService('monday', 'monday-card', 'monday-incidents'),
+                    loadStatuspageService('lucid', 'lucid-card', 'lucid-incidents'),
+                    loadStatuspageService('figma', 'figma-card', 'figma-incidents'),
+                    loadAtlassianStatus()
+                ]);
+
+                document.getElementById('operationalCount').textContent = statusCounts.operational;
+                document.getElementById('issuesCount').textContent = statusCounts.issues;
+                document.getElementById('outagesCount').textContent = statusCounts.outages;
+
+                document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+            } catch (error) {
+                console.error('Error loading status:', error);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Check Now';
+            }
+        }
+
+        loadAllStatus();
+        setInterval(loadAllStatus, 60 * 1000);
+    </script>
+</body>
+</html>
