@@ -473,163 +473,8 @@
                 <div class="atlassian-title">Atlassian Products</div>
                 <a href="https://status.atlassian.com" target="_blank" class="atlassian-link">View Atlassian Status Page</a>
             </div>
-            <div class="atlassian-products">
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Jira Software</div>
-                        <div class="status-text loading" id="jira-software-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="jira-software-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Jira Service Management</div>
-                        <div class="status-text loading" id="jira-service-status">
-                            <span class="status-indicator loading"></span>
-                            
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="jira-service-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Jira Work Management</div>
-                        <div class="status-text loading" id="jira-work-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="jira-work-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Jira Product Discovery</div>
-                        <div class="status-text loading" id="jira-discovery-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="jira-discovery-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Confluence</div>
-                        <div class="status-text loading" id="confluence-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="confluence-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Jira Core</div>
-                        <div class="status-text loading" id="jira-core-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="jira-core-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Bitbucket</div>
-                        <div class="status-text loading" id="bitbucket-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="bitbucket-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Trello</div>
-                        <div class="status-text loading" id="trello-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="trello-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Opsgenie</div>
-                        <div class="status-text loading" id="opsgenie-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="opsgenie-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Atlassian Support</div>
-                        <div class="status-text loading" id="atlassian-support-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="atlassian-support-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Atlassian Partners</div>
-                        <div class="status-text loading" id="atlassian-partners-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="atlassian-partners-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
-
-                <div class="atlassian-product">
-                    <div class="product-header">
-                        <div class="product-name">Atlassian Developers</div>
-                        <div class="status-text loading" id="atlassian-developers-status">
-                            <span class="status-indicator loading"></span>
-                            Checking...
-                        </div>
-                    </div>
-                    <div class="current-incidents" id="atlassian-developers-incidents">
-                        <div class="loading">Checking status...</div>
-                    </div>
-                </div>
+            <div class="atlassian-products" id="atlassian-products-container">
+                <!-- Atlassian products will be dynamically loaded here -->
             </div>
         </div>
     </div>
@@ -640,7 +485,7 @@
             monday: 'https://status.monday.com/api/v2/status.json',
             lucid: 'https://status.lucid.co/api/v2/status.json',
             figma: 'https://status.figma.com/api/v2/status.json',
-            atlassian: 'https://status.atlassian.com/api/v2/status.json'
+            atlassianSummary: 'https://status.atlassian.com/api/v2/summary.json'
         };
 
         const INCIDENTS_APIS = {
@@ -651,46 +496,85 @@
             atlassian: 'https://status.atlassian.com/api/v2/incidents/unresolved.json'
         };
 
-        const CORS_PROXY = 'https://api.allorigins.win/get?url=';
+        // Try multiple CORS proxies
+        const CORS_PROXIES = [
+            'https://api.allorigins.win/get?url=',
+            'https://corsproxy.io/?',
+            ''  // Direct fetch as last resort
+        ];
+
+        let currentProxyIndex = 0;
+
+        // Map component names to display names
+        const ATLASSIAN_PRODUCT_MAP = {
+            'Jira Software': 'jira-software',
+            'Jira Service Management': 'jira-service',
+            'Jira Work Management': 'jira-work',
+            'Jira Product Discovery': 'jira-discovery',
+            'Confluence': 'confluence',
+            'Jira Core': 'jira-core',
+            'Bitbucket': 'bitbucket',
+            'Trello': 'trello',
+            'Opsgenie': 'opsgenie',
+            'Atlassian Support': 'atlassian-support',
+            'Atlassian Partners': 'atlassian-partners',
+            'Atlassian Developers': 'atlassian-developers'
+        };
 
         let statusCounts = { operational: 0, issues: 0, outages: 0 };
 
         async function fetchJSON(url) {
-            try {
-                const response = await fetch(CORS_PROXY + encodeURIComponent(url));
-                const data = await response.json();
-                return JSON.parse(data.contents);
-            } catch (error) {
-                console.error('Error fetching:', url, error);
-                return null;
+            for (let i = 0; i < CORS_PROXIES.length; i++) {
+                try {
+                    const proxyUrl = CORS_PROXIES[i] + encodeURIComponent(url);
+                    const response = await fetch(proxyUrl);
+                    
+                    if (CORS_PROXIES[i].includes('allorigins')) {
+                        const data = await response.json();
+                        return JSON.parse(data.contents);
+                    } else {
+                        return await response.json();
+                    }
+                } catch (error) {
+                    console.warn(`Proxy ${i} failed for ${url}:`, error);
+                    if (i === CORS_PROXIES.length - 1) {
+                        console.error('All proxies failed for:', url);
+                        return null;
+                    }
+                }
             }
+            return null;
         }
 
-        function updateStatusDisplay(cardId, statusElement, status, description) {
-            const statusText = statusElement || document.querySelector(`#${cardId} .status-text`);
-            
-            statusText.className = 'status-text';
-            const indicator = statusText.querySelector('.status-indicator');
+        function mapComponentStatus(status) {
+            const statusMap = {
+                'operational': 'operational',
+                'degraded_performance': 'degraded',
+                'partial_outage': 'degraded',
+                'major_outage': 'outage',
+                'under_maintenance': 'degraded'
+            };
+            return statusMap[status] || 'operational';
+        }
+
+        function updateStatusDisplay(statusElement, status, description) {
+            statusElement.className = 'status-text';
             
             if (status === 'operational' || status === 'none') {
-                statusText.classList.add('operational');
-                indicator.className = 'status-indicator operational';
-                statusText.innerHTML = '<span class="status-indicator operational"></span>Operational';
+                statusElement.classList.add('operational');
+                statusElement.innerHTML = '<span class="status-indicator operational"></span>Operational';
                 statusCounts.operational++;
-            } else if (status === 'minor' || status === 'degraded_performance') {
-                statusText.classList.add('degraded');
-                indicator.className = 'status-indicator degraded';
-                statusText.innerHTML = '<span class="status-indicator degraded"></span>Degraded';
+            } else if (status === 'degraded') {
+                statusElement.classList.add('degraded');
+                statusElement.innerHTML = '<span class="status-indicator degraded"></span>Degraded';
                 statusCounts.issues++;
-            } else if (status === 'major' || status === 'partial_outage' || status === 'major_outage') {
-                statusText.classList.add('outage');
-                indicator.className = 'status-indicator outage';
-                statusText.innerHTML = '<span class="status-indicator outage"></span>Outage';
+            } else if (status === 'outage') {
+                statusElement.classList.add('outage');
+                statusElement.innerHTML = '<span class="status-indicator outage"></span>Outage';
                 statusCounts.outages++;
             } else {
-                statusText.classList.add('degraded');
-                indicator.className = 'status-indicator degraded';
-                statusText.innerHTML = `<span class="status-indicator degraded"></span>${description || 'Issue'}`;
+                statusElement.classList.add('degraded');
+                statusElement.innerHTML = `<span class="status-indicator degraded"></span>${description || 'Issue'}`;
                 statusCounts.issues++;
             }
         }
@@ -731,12 +615,12 @@
             const statusElement = card.querySelector('.status-text');
             
             if (data.status === 'ok' || data.active_incidents?.length === 0) {
-                updateStatusDisplay('slack-card', statusElement, 'operational');
+                updateStatusDisplay(statusElement, 'operational');
                 renderIncidents([], 'slack-incidents');
             } else {
                 const incidents = data.active_incidents || [];
-                const worstStatus = incidents.some(i => i.type === 'outage') ? 'major' : 'minor';
-                updateStatusDisplay('slack-card', statusElement, worstStatus);
+                const worstStatus = incidents.some(i => i.type === 'outage') ? 'outage' : 'degraded';
+                updateStatusDisplay(statusElement, worstStatus);
                 renderIncidents(incidents, 'slack-incidents');
             }
         }
@@ -754,45 +638,100 @@
             const statusElement = card.querySelector('.status-text');
             
             const status = statusData.status?.indicator || 'none';
-            updateStatusDisplay(cardId, statusElement, status, statusData.status?.description);
+            const mappedStatus = mapComponentStatus(status);
+            updateStatusDisplay(statusElement, mappedStatus, statusData.status?.description);
             
             const incidents = incidentsData?.incidents || [];
             renderIncidents(incidents, incidentsId);
         }
 
         async function loadAtlassianStatus() {
-            const statusData = await fetchJSON(STATUS_APIS.atlassian);
+            // Use summary endpoint which includes components and their statuses
+            const summaryData = await fetchJSON(STATUS_APIS.atlassianSummary);
             const incidentsData = await fetchJSON(INCIDENTS_APIS.atlassian);
             
-            if (!statusData) return;
+            if (!summaryData) {
+                document.getElementById('atlassian-products-container').innerHTML = 
+                    '<div class="error">Unable to fetch Atlassian status. Please check <a href="https://status.atlassian.com" target="_blank">status.atlassian.com</a> directly.</div>';
+                return;
+            }
 
-            const products = [
-                'jira-software', 
-                'jira-service', 
-                'jira-work',
-                'jira-discovery',
-                'confluence', 
-                'jira-core', 
-                'bitbucket',
-                'trello',
-                'opsgenie',
-                'atlassian-support',
-                'atlassian-partners',
-                'atlassian-developers'
-            ];
-            const status = statusData.status?.indicator || 'none';
+            const components = summaryData.components || [];
             const incidents = incidentsData?.incidents || [];
-
-            products.forEach(product => {
-                const statusElement = document.getElementById(`${product}-status`);
-                updateStatusDisplay(product, statusElement, status);
-                
-                const relevantIncidents = incidents.filter(inc => 
-                    inc.name.toLowerCase().includes(product.replace('-', ' ')) ||
-                    incidents.length < 3
+            const container = document.getElementById('atlassian-products-container');
+            
+            console.log('Atlassian Summary:', summaryData);
+            console.log('Atlassian Incidents:', incidents);
+            
+            // Create product cards
+            let html = '';
+            Object.entries(ATLASSIAN_PRODUCT_MAP).forEach(([displayName, productId]) => {
+                // Find matching component (case-insensitive partial match)
+                const component = components.find(c => 
+                    c.name.toLowerCase().includes(displayName.toLowerCase())
                 );
                 
-                renderIncidents(relevantIncidents.length > 0 ? relevantIncidents : incidents, `${product}-incidents`);
+                // Get component status
+                let status = 'operational';
+                if (component) {
+                    status = mapComponentStatus(component.status);
+                    console.log(`${displayName}: ${component.status} -> ${status}`);
+                }
+                
+                // Check if any incidents affect this product
+                const affectedByIncidents = incidents.length > 0 && incidents.some(inc => {
+                    const incidentAffects = inc.components?.some(c => 
+                        c.name.toLowerCase().includes(displayName.toLowerCase())
+                    ) || inc.name.toLowerCase().includes(displayName.toLowerCase());
+                    return incidentAffects;
+                });
+                
+                // If there are incidents affecting this product, override status
+                if (affectedByIncidents && status === 'operational') {
+                    status = 'degraded';
+                }
+
+                html += `
+                    <div class="atlassian-product">
+                        <div class="product-header">
+                            <div class="product-name">${displayName}</div>
+                            <div class="status-text ${status}" id="${productId}-status">
+                                <span class="status-indicator ${status}"></span>
+                                ${status.charAt(0).toUpperCase() + status.slice(1)}
+                            </div>
+                        </div>
+                        <div class="current-incidents" id="${productId}-incidents">
+                        </div>
+                    </div>
+                `;
+
+                // Update counts
+                if (status === 'operational') {
+                    statusCounts.operational++;
+                } else if (status === 'degraded') {
+                    statusCounts.issues++;
+                } else if (status === 'outage') {
+                    statusCounts.outages++;
+                }
+            });
+
+            container.innerHTML = html;
+
+            // Render incidents for each product
+            Object.entries(ATLASSIAN_PRODUCT_MAP).forEach(([displayName, productId]) => {
+                // Filter incidents that affect this specific product
+                const productIncidents = incidents.filter(inc => {
+                    const affectsProduct = inc.components?.some(c => 
+                        c.name.toLowerCase().includes(displayName.toLowerCase())
+                    ) || inc.name.toLowerCase().includes(displayName.toLowerCase());
+                    return affectsProduct;
+                });
+                
+                // If no specific incidents, show all incidents (they often affect multiple products)
+                const incidentsToShow = productIncidents.length > 0 ? productIncidents : 
+                                       (incidents.length > 0 ? incidents : []);
+                
+                renderIncidents(incidentsToShow, `${productId}-incidents`);
             });
         }
 
