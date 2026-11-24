@@ -268,7 +268,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>TME SaaS Support & Optimization</h1>
+            <h1>DWE SaaS Support & Optimization</h1>
             <p class="subtitle">Real-time operational status monitoring</p>
             <p class="last-updated">Last checked: <span id="lastUpdated">Never</span></p>
             <button class="refresh-btn" onclick="loadAllStatus()" id="refreshBtn">
@@ -641,7 +641,8 @@
                     loadAtlassianStatus()
                 ]);
 
-                document.getElementById('operationalCount').textContent = statusCounts.operational;
+                const totalServices = statusCounts.operational + statusCounts.issues + statusCounts.outages + statusCounts.unknown;
+                document.getElementById('operationalCount').textContent = `${statusCounts.operational} / ${totalServices}`;
                 document.getElementById('issuesCount').textContent = statusCounts.issues;
                 document.getElementById('outagesCount').textContent = statusCounts.outages;
                 document.getElementById('unknownCount').textContent = statusCounts.unknown;
