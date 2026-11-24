@@ -271,7 +271,7 @@
             <h1>DWE SaaS Support & Optimization</h1>
             <p class="subtitle">Real-time operational status monitoring</p>
             <p class="last-updated">Last checked: <span id="lastUpdated">Never</span></p>
-            <button class="refresh-btn" onclick="loadAllStatus()" id="refreshBtn">
+            <button class="refresh-btn" onclick="loadAllStatus(true)" id="refreshBtn">
                 Check Now
             </button>
         </header>
@@ -622,9 +622,28 @@
             });
         }
 
-        async function loadAllStatus() {
+        const CHECKING_HTML = '<span class="status-indicator loading"></span>Checking...';
+
+        // Put every card back into its grey "Checking..." state (manual refreshes only)
+        function resetToChecking() {
+            ['slack', 'monday', 'lucid', 'figma'].forEach(id => {
+                const el = document.querySelector(`#${id}-card .status-text`);
+                el.className = 'status-text loading';
+                el.innerHTML = CHECKING_HTML;
+                document.getElementById(`${id}-incidents`).innerHTML = '<div class="loading">Checking status...</div>';
+            });
+            document.querySelectorAll('#atlassian-products-container .status-text').forEach(el => {
+                el.className = 'status-text loading';
+                el.innerHTML = CHECKING_HTML;
+            });
+        }
+
+        async function loadAllStatus(manual = false) {
             if (isLoading) return;   // prevent overlapping refreshes
             isLoading = true;
+
+            if (manual) resetToChecking();
+            const minDelay = manual ? new Promise(r => setTimeout(r, 800)) : Promise.resolve();
 
             const btn = document.getElementById('refreshBtn');
             btn.disabled = true;
@@ -638,7 +657,8 @@
                     loadStatuspageService('monday', 'monday-card', 'monday-incidents'),
                     loadStatuspageService('lucid', 'lucid-card', 'lucid-incidents'),
                     loadStatuspageService('figma', 'figma-card', 'figma-incidents'),
-                    loadAtlassianStatus()
+                    loadAtlassianStatus(),
+                    minDelay
                 ]);
 
                 const totalServices = statusCounts.operational + statusCounts.issues + statusCounts.outages + statusCounts.unknown;
@@ -657,8 +677,8 @@
             }
         }
 
-        loadAllStatus();
-        setInterval(loadAllStatus, 60 * 1000);
+        loadAllStatus(false);
+        setInterval(() => loadAllStatus(false), 60 * 1000);
     </script>
 </body>
 </html>
